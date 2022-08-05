@@ -9,11 +9,12 @@ class ThreadSafeLogger
 {
 	public:
 		static ThreadSafeLogger& getInstance(void);
+		~ThreadSafeLogger();
 		void log(const LogLevel& level, const std::string& message);
 
 	private:
 		ThreadSafeLogger(void) = default;
-		~ThreadSafeLogger() = default;
+		//~ThreadSafeLogger() = default;
 		ThreadSafeLogger(ThreadSafeLogger const&) = delete;
 		ThreadSafeLogger(ThreadSafeLogger&&) = delete;
 		ThreadSafeLogger& operator=(ThreadSafeLogger const&) = delete;

@@ -19,6 +19,12 @@ void ThreadSafeLogger::log(const LogLevel& level, const std::string& message)
 	}
 }
 
+ThreadSafeLogger::~ThreadSafeLogger()
+{
+	std::lock_guard<std::mutex> lock(itemsMutex);
+	writeToFile();
+}
+
 void ThreadSafeLogger::writeToFile(void)
 {
 	while( items.size() )
