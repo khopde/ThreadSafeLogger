@@ -1,5 +1,8 @@
 #include <ThreadSafeLogger.h>
 #include <thread>
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 //Logging macros
 #define LOG(level, msg) ThreadSafeLogger::getInstance().log(level, msg)
@@ -12,12 +15,15 @@ void printTable(int num)
 {
 	for(size_t i=1; i<=100; ++i)
 	{
-		LOG_DEBUG( std::to_string(num) + " x " + std::to_string(i) + " = " + std::to_string( num*i ) );
+		LOG_INFO( std::to_string(num) + " x " + std::to_string(i) + " = " + std::to_string( num*i ) );
+		std::this_thread::sleep_for(500ms);
 	}
 }
 
 int main()
 {
+	ThreadSafeLogger::getInstance().init(LogLevel::INFO, 2);
+
 	std::thread t1(
 		[](){ printTable(3); }
 	);
@@ -39,5 +45,6 @@ int main()
 	t2.join();
 
 	LOG_WARN("Hello logger 8");
+	ThreadSafeLogger::getInstance().shutDown();
 	return 0;
 }
